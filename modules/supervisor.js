@@ -30,6 +30,14 @@ function showConsole() {
     });
 }
 
+function showDepartmentSales() {
+
+}
+
+function addDepartment() {
+    
+}
+
 
 module.exports = {
     showConsole: showConsole
