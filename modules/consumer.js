@@ -7,7 +7,9 @@
 var packages = require("../packages.js");
 
 var messages = {
-    exit: "Exit console"
+    exit: "Exit console",
+    purchaseFromSameDepartment: "Purchase another item from this department",
+    showCategories: "Purchase an item from another category"
 }
 
 var product_categories = [];
@@ -82,6 +84,10 @@ function showProducts() {
         console.log(product.description);
     }
 
+    promptPurchase();
+}
+
+function promptPurchase() {
     packages.inquirer.prompt(
         {
             name: "id",
@@ -108,8 +114,50 @@ function showProducts() {
 }
 
 function purchaseProduct(id, quantity) {
-    
+    var query = "UPDATE products_list SET ? WHERE ?";
+    packages.ecommerce.database.query(query,
+        [
+            {
+                quantity: products[id].stock - quantity
+            },
+            {
+                id: id
+            }
+        ],
+        function (err, res) {
+            if (err) {
+                console.log(`An error has occurred. [${err}]`);
+                throw err;
+            }
 
+            console.log(`${quantity} of item ID ${id} have been successfully ordered!`.green);
+
+            promptNextAction();
+
+        })
+
+}
+
+function promptNextAction() {
+    packages.inquirer.prompt({
+        name: "action",
+        type: "list",
+        message: "What would you like to do next?",
+        choices: [messages.purchaseFromSameDepartment, messages.showCategories, messages.exit]
+    })
+        .then(function (res) {
+            switch (res.action) {
+                case messages.purchaseFromSameDepartment:
+                    promptPurchase();
+                    break;
+                case messages.showCategories:
+                    showCategories();
+                    break;
+                case messages.exit:
+                    packages.functions.exitConsole();
+                    break;
+            }
+        })
 }
 
 module.exports = {
