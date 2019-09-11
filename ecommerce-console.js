@@ -1,29 +1,65 @@
-var consumer = require("./modules/consumer.js");
-var manager = require("./modules/manager.js");
-var supervisor = require("./modules/supervisor.js");
+var packages = require("packages.js");
 
-// Prompt user to a) sign in b) exit application
+var messages = {
+    consoleWelcome: "WELCOME!",
+    signIn: "Sign In",
+    exit: "Exit console",
+    consumer: "... a consumer",
+    manager: "... a manager",
+    supervisor: "... a supervisor"
+}
 
+// Upon connection to the database, show the sign in page
+packages.ecommerce.database.connect(function (err) {
+    if (err) {
+        console.log(`An error has occurred. [${err}]`);
+        throw err;
+    }
+
+    packages.functions.printMessage(messages.consoleWelcome);
+
+    // Prompt user to a) sign in b) exit application
+    packages.inquirer.prompt({
+        name: "entryAction",
+        type: "list",
+        message: "What would you like to do?",
+        choices: ["Sign In", "Exit"]
+    }).then(function (res) {
+        switch (res.entryAction) {
+            case messages.signIn:
+                showSignInOptions();
+                break;
+            case messages.exit:
+                packages.functions.exitConsole();
+                break;
+        }
+    })
+})
+
+
+function showSignInOptions() {
     // A. SIGN IN
     // Prompt user whether they are...
+    packages.inquirer.prompt({
+        name: "clientType",
+        message: "I am...",
+        choices: [messages.consumer, messages.manager, messages.supervisor, messages.exit],
+        type: "list"
+    }).then(function (res) {
+        switch (res.clientType) {
+            case messages.consumer:
+                packages.consumer.showConsole();
+                break;
+            case messages.manager:
+                packages.manager.showConsole();
+                break;
+            case messages.supervisor:
+                packages.supervisor.showConsole();
+                break;
+            case messages.exit:
+                packages.functions.exitConsole();
+                break;
+        }
+    })
 
-        // 1. Customer
-            // a) Can view product categories
-            // b) Can view products within any chosen category (item IDs, names, and prices)
-            // c) Upon selection of a product, the user can choose a quantity and place the order
-                // * Purchase upon confirmation there is stil inventory available
-                // * Update product quantity 
-
-        // 2. Manager
-            // a) Can view all products (category, item IDs, names, prices, and quantities)
-            // b) View only the items that are low in quantity 
-            // c) Increase the quantity of any item
-            // d) Can add a new product (must set name, price, quantity, and category) 
-
-        // 3. Supervisor
-            // a) View product sales by department/category (log out a table)
-            // b) Create a new department
-
-
-    // B. EXIT 
-        // Call process.exit()
+}
