@@ -1,9 +1,3 @@
-// a) Can view product categories
-// b) Can view products within any chosen category (item IDs, names, and prices)
-// c) Upon selection of a product, the user can choose a quantity and place the order
-// * Purchase upon confirmation there is stil inventory available
-// * Update product quantity 
-
 var packages = require("../packages.js");
 // MY MODULES
 var functions = require("./functions.js");

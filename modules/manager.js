@@ -42,7 +42,7 @@ function showConsole() {
 
 function getProducts(minQuantity) {
     // Get categories and the show to user
-    var query = `SELECT id, product_name, category, price, quantity FROM products_list WHERE quantity <= ${minQuantity}`;
+    var query = `SELECT id, product_name, category, price, quantity, cost FROM products_list WHERE quantity <= ${minQuantity}`;
     ecommerce.database.query(query,
         function (err, res) {
             if (err) {
@@ -55,11 +55,12 @@ function getProducts(minQuantity) {
 
                 for (item of res) {
                     if (item.quantity != 0) {
-                        var description = `${item.id}:${item.product_name.bold} (${item.category.blue}) - $${item.price.toString().yellow}`;
+                        var description = `${item.id}: ${item.product_name.bold} (${item.category.blue}) - ${(item.quantity.toString() + " units remaining").yellow}`;
                         products[item.id] = {};
                         products[item.id].description = description;
                         products[item.id].stock = item.quantity;
                         products[item.id].price = item.price;
+                        products[item.id].cost = item.cost;
                         products[item.id].category = item.category;
                     }
                 }
@@ -125,6 +126,9 @@ function promptRestock() {
                         throw err;
                     }
 
+                    products[id].stock += quantity;
+                    updateOverhead(products[id].category, products[id].cost * quantity);
+
                     console.log(`${quantity} of item ID #${id} have been added to inventory`.green);
                     promptNextAction();
 
@@ -171,7 +175,12 @@ function addProduct() {
             product_categories.push(item.department_name);
         }
 
+        if (product_categories.length != 0) {
         promptCreation();
+        } else {
+            console.log("There are currently no departments established. Please contact your supervisor regarding department creation.".red);
+            showConsole();            
+        }
 
     })
 
@@ -193,7 +202,7 @@ function promptCreation() {
         }, {
             name: "price",
             type: "number",
-            message: "How much does this product cost?",
+            message: "How much does one unit of this product sell for? (retail price)",
             validate: function (price) {
                 if (isNaN(price) || price <= 0) {
                     return "Please enter a positive non-zero number!";
@@ -203,7 +212,21 @@ function promptCreation() {
                 }
             }
 
-        }, 
+        },
+        {
+            name: "cost",
+            type: "number",
+            message: "How much does one unit of this product cost to purchase? (wholesale price/manufacturing cost)",
+            validate: function (cost) {
+                if (isNaN(cost) || cost <= 0) {
+                    return "Please enter a positive non-zero number!";
+                }
+                else {
+                    return true;
+                }
+            }
+
+        },
         {
             name: "quantity",
             type: "number",
@@ -219,22 +242,37 @@ function promptCreation() {
 
         }
     ]).then(function (res) {
-        var query = `INSERT INTO products_list(product_name, category, price, quantity) VALUES ("${res.name}", "${res.category}", ${res.price}, ${res.quantity})`;
-        ecommerce.database.query(query, function(err, res) {
+        var query = `INSERT INTO products_list(product_name, category, price, quantity, cost) VALUES ("${res.name}", "${res.category}", ${res.price}, ${res.quantity}, ${res.cost})`;
+        var category = res.category;
+        var cost = res.cost;
+        var quantity = res.quantity;
+        ecommerce.database.query(query, function (err, res) {
             if (err) {
                 console.log(`An error has occurred. [${err}]`);
                 throw err;
             }
 
+            updateOverhead(category, cost * quantity);
+
             console.log(`${res.affectedRows} items have been added for sale.`)
-            promptNextAction();
+            showConsole();
         })
 
-
-
-
-
     });
+}
+
+function updateOverhead(department, cost) {
+    var query = `UPDATE department_sales SET overhead = overhead + ${cost} WHERE ?`;
+    ecommerce.database.query(query,
+        {
+            department_name: department
+        },
+        function (err, res) {
+            if (err) {
+                console.log(`An error has occurred. [${err}]`);
+                throw err;
+            }
+        });
 }
 
 module.exports = {
