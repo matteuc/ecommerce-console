@@ -54,9 +54,6 @@ function getProductsIn(department) {
                         products[item.id].price = item.price;
                         products[item.id].category = item.category;
                         products[item.id].description = createDescription(item.id);
-
-
-
                     }
                 }
                 if (functions.isEmpty(products)) {

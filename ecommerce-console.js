@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 var packages = require("./packages.js");
 // MY MODULES
 var functions = require("./modules/functions.js");

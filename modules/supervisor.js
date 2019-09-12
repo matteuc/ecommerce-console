@@ -60,7 +60,7 @@ function showDepartmentSales() {
         } else {
             console.log("There are currently no departments established. Create one at the main console.".red);
         }
-        
+
         showConsole();
 
     })
@@ -102,7 +102,6 @@ function addDepartment() {
 
     });
 }
-
 
 module.exports = {
     showConsole: showConsole

@@ -1,4 +1,5 @@
 var packages = require("./packages.js");
+var keys = require("./keys.js");
 var mysql = require("mysql");
 
 
@@ -12,7 +13,7 @@ var connection = mysql.createConnection({
     user: "root",
 
     // Your password
-    password: "Ymcninja9810308991$",
+    password: keys.SQL_config.secret,
     database: "ecommercedatabase"
 })
 
