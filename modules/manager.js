@@ -1,8 +1,3 @@
-// a) Can view all products (category, item IDs, names, prices, and quantities)
-// b) View only the items that are low in quantity 
-// c) Increase the quantity of any item
-// d) Can add a new product (must set name, price, quantity, and category) 
-
 var packages = require("../packages.js");
 // MY MODULES
 var functions = require("./functions.js");
