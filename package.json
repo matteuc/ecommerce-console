@@ -1,0 +1,26 @@
+{
+  "name": "ecommerce-console",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ecommerce-console.js",
+  "dependencies": {
+    "colors": "^1.3.3",
+    "figlet": "^1.2.4",
+    "inquirer": "^7.0.0",
+    "mysql": "^2.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matteuc/ecommerce-console.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matteuc/ecommerce-console/issues"
+  },
+  "homepage": "https://github.com/matteuc/ecommerce-console#readme"
+}

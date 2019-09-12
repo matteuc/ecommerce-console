@@ -1,3 +1,5 @@
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Ymcninja9810308991$';
+
 -- DATABASE: ecommerceDatabase
 DROP DATABASE IF EXISTS ecommerceDatabase;
 CREATE DATABASE ecommerceDatabase;
@@ -11,7 +13,7 @@ CREATE TABLE products_list(
     price DECIMAL(10, 2) NULL,
     quantity INT NULL,
     PRIMARY KEY(id)
-)   
+);   
 -- TABLE: department_sales
 CREATE TABLE department_sales(
     id INT NOT NULL auto_increment,
@@ -20,3 +22,4 @@ CREATE TABLE department_sales(
     sales DECIMAL(10, 2) NULL,
     PRIMARY KEY(id)
 )   
+

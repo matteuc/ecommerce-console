@@ -4,6 +4,9 @@
 // d) Can add a new product (must set name, price, quantity, and category) 
 
 var packages = require("../packages.js");
+// MY MODULES
+var functions = require("./functions.js");
+var ecommerce = require("../connection.js");
 
 var messages = {
     exit: "Exit console",
@@ -30,7 +33,7 @@ function showConsole() {
                 addProduct();
                 break;
             case messages.exit:
-                packages.functions.exitConsole();
+                functions.exitConsole();
                 break;
         }
     });

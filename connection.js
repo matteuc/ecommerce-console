@@ -1,6 +1,8 @@
-var packages = require("packages.js");
+var packages = require("./packages.js");
+var mysql = require("mysql");
 
-var connection = packages.mysql.createConnection({
+
+var connection = mysql.createConnection({
     host: "localhost",
 
     // Your port; if not 3306
@@ -11,7 +13,7 @@ var connection = packages.mysql.createConnection({
 
     // Your password
     password: "Ymcninja9810308991$",
-    database: "ecommerceDatabase"
+    database: "ecommercedatabase"
 })
 
 module.exports = {

@@ -13,7 +13,16 @@ function printMessage(message) {
     }));
 }
 
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 module.exports = {
     exitConsole: exitConsole,
-    printMessage: printMessage
+    printMessage: printMessage,
+    isEmpty: isEmpty
 }

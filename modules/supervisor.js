@@ -2,6 +2,9 @@
 // b) Create a new department
 
 var packages = require("../packages.js");
+// MY MODULES
+var functions = require("./functions.js");
+var ecommerce = require("../connection.js");
 
 var messages = {
     exit: "Exit console",
@@ -24,7 +27,7 @@ function showConsole() {
                 addDepartment();
                 break;
             case messages.exit:
-                packages.functions.exitConsole();
+                functions.exitConsole();
                 break;
         }
     });
@@ -35,7 +38,7 @@ function showDepartmentSales() {
 }
 
 function addDepartment() {
-    
+
 }
 
 
