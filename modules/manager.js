@@ -55,13 +55,14 @@ function getProducts(minQuantity) {
 
                 for (item of res) {
                     if (item.quantity != 0) {
-                        var description = `${item.id}: ${item.product_name.bold} (${item.category.blue}) - ${(item.quantity.toString() + " units remaining").yellow}`;
                         products[item.id] = {};
-                        products[item.id].description = description;
+                        products[item.id].name = item.product_name;
                         products[item.id].stock = item.quantity;
                         products[item.id].price = item.price;
                         products[item.id].cost = item.cost;
                         products[item.id].category = item.category;
+                        products[item.id].description = createDescription(item.id);
+
                     }
                 }
 
@@ -127,6 +128,7 @@ function promptRestock() {
                     }
 
                     products[id].stock += quantity;
+                    products[id].description = createDescription(id);
                     updateOverhead(products[id].category, products[id].cost * quantity);
 
                     console.log(`${quantity} of item ID #${id} have been added to inventory`.green);
@@ -176,10 +178,10 @@ function addProduct() {
         }
 
         if (product_categories.length != 0) {
-        promptCreation();
+            promptCreation();
         } else {
             console.log("There are currently no departments established. Please contact your supervisor regarding department creation.".red);
-            showConsole();            
+            showConsole();
         }
 
     })
@@ -273,6 +275,10 @@ function updateOverhead(department, cost) {
                 throw err;
             }
         });
+}
+
+function createDescription(id) {
+    return `${id}: ${products[item.id].name.bold} (${products[item.id].category.blue}) - ${(products[item.id].stock.toString() + " units remaining").yellow}`;
 }
 
 module.exports = {

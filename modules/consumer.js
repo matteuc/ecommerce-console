@@ -48,12 +48,13 @@ function getProductsIn(department) {
 
                 for (item of res) {
                     if (item.quantity != 0) {
-                        var description = `${item.id}:${item.product_name.bold} (${item.category.blue}) - $${item.price.toString().yellow}`;
                         products[item.id] = {};
-                        products[item.id].description = description;
+                        products[item.id].name = item.product_name;
                         products[item.id].stock = item.quantity;
                         products[item.id].price = item.price;
                         products[item.id].category = item.category;
+                        products[item.id].description = createDescription(item.id);
+
 
 
                     }
@@ -195,6 +196,10 @@ function promptNextAction() {
                     break;
             }
         })
+}
+
+function createDescription(id) {
+    return `${id}: ${products[item.id].name.bold} (${products[item.id].category.blue}) - $${products[item.id].price.toString().yellow}`;
 }
 
 module.exports = {
