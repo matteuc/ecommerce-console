@@ -127,7 +127,7 @@ function promptPurchase() {
             type: 'number',
             message: "How many would you like to buy?",
             validate: function (quantity) {
-                if (isNaN(quantity)) {
+                if (isNaN(quantity) || quantity <= 0) {
                     return "Please enter a positive non-zero number!";
                 }
                 else if (quantity > products[res.id].stock) {
@@ -164,8 +164,6 @@ function purchaseProduct(id, quantity) {
             promptNextAction();
 
         });
-
-    // Add to sales in proper department (in department_sales table)
 
 }
 
