@@ -21,8 +21,13 @@ function isEmpty(obj) {
     return true;
 }
 
+function isInt(num) {
+    return parseInt(num) === num;
+}
+
 module.exports = {
     exitConsole: exitConsole,
     printMessage: printMessage,
-    isEmpty: isEmpty
+    isEmpty: isEmpty,
+    isInt: isInt
 }
