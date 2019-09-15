@@ -1,5 +1,9 @@
 console.log('Loading...');
 
 exports.SQL_config = {
-    secret: process.env.MYSQL_SECRET
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: process.env.MYSQL_SECRET,
+    database: "ecommercedatabase"
 }

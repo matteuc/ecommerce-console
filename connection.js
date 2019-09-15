@@ -3,19 +3,7 @@ var keys = require("./keys.js");
 var mysql = require("mysql");
 
 
-var connection = mysql.createConnection({
-    host: "localhost",
-
-    // Your port; if not 3306
-    port: 3306,
- 
-    // Your username
-    user: "root",
-
-    // Your password
-    password: keys.SQL_config.secret,
-    database: "ecommercedatabase"
-})
+var connection = mysql.createConnection(keys.SQL_config);
 
 module.exports = {
     database: connection

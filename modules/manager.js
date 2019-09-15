@@ -83,20 +83,20 @@ function showProducts() {
         console.log(products[id].description);
     }
 
+
+    // Prompt user whether to restock or remove item 
     promptRestock();
 }
 
 function promptRestock() {
-    packages.inquirer.prompt([
-        {
+    packages.inquirer.prompt([{
             name: "id",
             type: "input",
             message: "Please type in the ID of the product you would like to restock:",
             validate: function (id) {
                 if (!id || !products[id]) {
                     return 'Please enter a valid product ID';
-                }
-                else {
+                } else {
                     return true;
                 }
             }
@@ -108,45 +108,44 @@ function promptRestock() {
             validate: function (quantity) {
                 if (isNaN(quantity) || quantity <= 0) {
                     return "Please enter a positive non-zero number!";
-                }
-                else {
+                } else {
                     return true;
                 }
             }
-        }]).then(function (res) {
-            var query = `UPDATE products_list SET quantity = quantity + ${res.quantity} WHERE ?`;
-            var quantity = res.quantity;
-            var id = res.id;
-            ecommerce.database.query(query,
-                {
-                    id: id
-                },
-                function (err, res) {
-                    if (err) {
-                        console.log(`An error has occurred. [${err}]`);
-                        throw err;
-                    }
+        }
+    ]).then(function (res) {
+        var query = `UPDATE products_list SET quantity = quantity + ${res.quantity} WHERE ?`;
+        var quantity = res.quantity;
+        var id = res.id;
+        ecommerce.database.query(query, {
+                id: id
+            },
+            function (err, res) {
+                if (err) {
+                    console.log(`An error has occurred. [${err}]`);
+                    throw err;
+                }
 
-                    products[id].stock += quantity;
-                    products[id].description = createDescription(id);
-                    updateOverhead(products[id].category, products[id].cost * quantity);
+                products[id].stock += quantity;
+                products[id].description = createDescription(id);
+                updateOverhead(products[id].category, products[id].cost * quantity);
 
-                    console.log(`${quantity} of item ID #${id} have been added to inventory`.green);
-                    promptNextAction();
+                console.log(`${quantity} of item ID #${id} have been added to inventory`.green);
+                promptNextAction();
 
-                });
+            });
 
 
-        })
+    })
 }
 
 function promptNextAction() {
     packages.inquirer.prompt({
-        name: "action",
-        type: "list",
-        message: "What would you like to do next?",
-        choices: [messages.restockAnother, messages.showConsole, messages.exit]
-    })
+            name: "action",
+            type: "list",
+            message: "What would you like to do next?",
+            choices: [messages.restockAnother, messages.showConsole, messages.exit]
+        })
         .then(function (res) {
             switch (res.action) {
                 case messages.restockAnother:
@@ -189,8 +188,7 @@ function addProduct() {
 }
 
 function promptCreation() {
-    packages.inquirer.prompt([
-        {
+    packages.inquirer.prompt([{
             name: "category",
             type: "list",
             message: "What type of product is this?",
@@ -208,8 +206,7 @@ function promptCreation() {
             validate: function (price) {
                 if (isNaN(price) || price <= 0) {
                     return "Please enter a positive non-zero number!";
-                }
-                else {
+                } else {
                     return true;
                 }
             }
@@ -222,8 +219,7 @@ function promptCreation() {
             validate: function (cost) {
                 if (isNaN(cost) || cost <= 0) {
                     return "Please enter a positive non-zero number!";
-                }
-                else {
+                } else {
                     return true;
                 }
             }
@@ -236,8 +232,7 @@ function promptCreation() {
             validate: function (quantity) {
                 if (isNaN(quantity) || quantity <= 0 || !(functions.isInt(quantity))) {
                     return "Please enter a positive non-zero integer!";
-                }
-                else {
+                } else {
                     return true;
                 }
             }
@@ -263,10 +258,10 @@ function promptCreation() {
     });
 }
 
+
 function updateOverhead(department, cost) {
     var query = `UPDATE department_sales SET overhead = overhead + ${cost} WHERE ?`;
-    ecommerce.database.query(query,
-        {
+    ecommerce.database.query(query, {
             department_name: department
         },
         function (err, res) {

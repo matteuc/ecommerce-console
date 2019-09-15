@@ -24,5 +24,5 @@ CREATE TABLE department_sales(
     overhead DECIMAL(10, 2) NULL,
     sales DECIMAL(10, 2) NULL,
     PRIMARY KEY(id)
-)   
+);   
 
